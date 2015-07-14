@@ -3,6 +3,8 @@ class Contact < ActiveRecord::Base
   validates :name, presence: true
   validates :email, presence: true, uniqueness: {scope: :user_id}
 
+  has_many :comments, as: :commentable
+
   belongs_to(
     :owner,
     class_name: "User",
@@ -21,6 +23,13 @@ class Contact < ActiveRecord::Base
     :shared_users,
     through: :contact_shares,
     source: :user
+  )
+
+  has_many(
+    :favorites,
+    class_name: "Favorite",
+    foreign_key: :contact_id,
+    primary_key: :id
   )
 
 end
